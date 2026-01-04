@@ -1,5 +1,7 @@
 @extends('layouts.staff')
 
+@section('title', 'Staff Dashboard')
+
 @section('content')
-    <h1 class="text-2xl font-bold">Staff Dashboard</h1>
+    <h1>Welcome Staff</h1>
 @endsection

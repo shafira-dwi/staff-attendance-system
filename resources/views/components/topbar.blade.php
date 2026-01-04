@@ -2,6 +2,9 @@
     <!-- Left -->
     <div class="flex items-center gap-4">
         <span class="text-lg font-semibold">Dashboard</span>
+        <button class="md:hidden" id="toggleSidebar">
+            ☰
+        </button>
 
         <input type="text" placeholder="Search..."
             class="hidden md:block border rounded px-3 py-1 text-sm focus:outline-none">
