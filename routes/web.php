@@ -1,25 +1,26 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
-use App\Http\Controllers\Staff\DashboardController as StaffDashboard;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::middleware('auth')->group(function () {
 
-    Route::prefix('admin')->group(function () {
-        Route::get('/dashboard', [AdminDashboard::class, 'index'])
-            ->name('admin.dashboard');
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard'); // Blade admin langsung dipakai
+        })->name('dashboard');
     });
 
-    Route::prefix('staff')->group(function () {
-        Route::get('/dashboard', [StaffDashboard::class, 'index'])
-            ->name('staff.dashboard');
+    Route::prefix('staff')->name('staff.')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('staff.dashboard'); // Blade staff langsung dipakai
+        })->name('dashboard');
     });
+
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

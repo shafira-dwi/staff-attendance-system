@@ -3,23 +3,23 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel</title>
-    @vite('resources/css/app.css')
+    <title>@yield('title', 'Admin Dashboard')</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 font-sans">
 
     <div class="flex min-h-screen">
         {{-- Sidebar --}}
-        @include('components.sidebar')
+        @include('components.sidebar-admin')
 
-        {{-- Main area --}}
+        {{-- Main Content --}}
         <div class="flex-1 flex flex-col">
             {{-- Topbar --}}
             @include('components.topbar')
 
-            {{-- Content --}}
-            <main class="flex-1 p-6 overflow-y-auto">
+            {{-- Page Content --}}
+            <main class="p-6">
                 @yield('content')
             </main>
         </div>
