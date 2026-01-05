@@ -1,7 +1,9 @@
 @extends('layouts.staff')
 
-@section('title', 'Staff Dashboard')
-
 @section('content')
-    <h1>Welcome Staff</h1>
+    <h1 class="text-xl font-bold mb-4">Staff Dashboard</h1>
+
+    <a href="{{ route('attendance.index') }}" class="px-4 py-2 bg-blue-600 text-white rounded">
+        Go to Attendance
+    </a>
 @endsection
