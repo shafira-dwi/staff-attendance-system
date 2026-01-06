@@ -11,7 +11,7 @@
             Dashboard
         </a>
 
-        <a href="{{ route('admin.attendance') }}"
+        <a href="{{ route('admin.attendance.index') }}"
             class="block px-4 py-2 rounded
            {{ str_starts_with($route, 'admin.attendance') ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-100' }}">
             Attendance

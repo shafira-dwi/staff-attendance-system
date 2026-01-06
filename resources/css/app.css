@@ -12,6 +12,20 @@ h1 {
 h2 {
     @apply text-xl font-semibold text-gray-800;
 }
+.badge-warning {
+    color: orange;
+    font-weight: bold;
+}
+
+.badge-success {
+    color: green;
+    font-weight: bold;
+}
+
+.badge-danger {
+    color: red;
+    font-weight: bold;
+}
 
 @tailwind components;
 @tailwind utilities;

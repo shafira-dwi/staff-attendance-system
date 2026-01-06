@@ -1,38 +1,74 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AttendanceController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\Staff\LeaveRequestController;
 
-// dummy dashboard tanpa login
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-});
-
-Route::get('/staff/dashboard', function () {
-    return view('staff.dashboard');
-});
-
+/*
+|--------------------------------------------------------------------------
+| DEFAULT
+|--------------------------------------------------------------------------
+*/
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::middleware(['auth'])->group(function () {
+/*
+|--------------------------------------------------------------------------
+| AUTHENTICATED ROUTES
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
 
-    Route::get('/staff/dashboard', function () {
-        return view('staff.dashboard');
+    /*
+    |--------------------------------------------------------------------------
+    | STAFF
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('staff')->name('staff.')->group(function () {
+
+        Route::get('/dashboard', function () {
+            return view('staff.dashboard');
+        })->name('dashboard');
+
+        // Attendance
+        Route::get('/attendance', [AttendanceController::class, 'index'])
+            ->name('attendance.index');
+
+        Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn'])
+            ->name('attendance.clockIn');
+
+        Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut'])
+            ->name('attendance.clockOut');
+
+        // Leave
+        Route::get('/leave', [LeaveRequestController::class, 'index'])
+            ->name('leave.index');
+
+        Route::post('/leave', [LeaveRequestController::class, 'store'])
+            ->name('leave.store');
     });
 
-    Route::get('/staff/attendance', [AttendanceController::class, 'index'])
-        ->name('attendance.index');
+    /*
+    |--------------------------------------------------------------------------
+    | ADMIN (DUMMY UI ONLY)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('admin')->name('admin.')->group(function () {
 
-    Route::post('/staff/attendance/clock-in', [AttendanceController::class, 'clockIn'])
-        ->name('attendance.clockIn');
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
 
-    Route::post('/staff/attendance/clock-out', [AttendanceController::class, 'clockOut'])
-        ->name('attendance.clockOut');
+        Route::get('/attendance', function () {
+            return view('admin.attendance.index');
+        })->name('attendance.index');
+    });
 });
 
-
-
+/*
+|--------------------------------------------------------------------------
+| AUTH ROUTES (LOGIN, LOGOUT, dll)
+|--------------------------------------------------------------------------
+*/
 require __DIR__ . '/auth.php';
