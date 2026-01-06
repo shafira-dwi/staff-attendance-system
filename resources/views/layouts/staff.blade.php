@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>@yield('title', 'Staff Dashboard')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
 <body class="bg-gray-50 font-sans">
