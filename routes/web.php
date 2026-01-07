@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Staff\LeaveRequestController;
-
+use App\Http\Controllers\Admin\LeaveApprovalController;
 /*
 |--------------------------------------------------------------------------
 | DEFAULT
@@ -63,6 +63,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/attendance', function () {
             return view('admin.attendance.index');
         })->name('attendance.index');
+
+        // LEAVE APPROVAL
+        Route::get('/leave-requests', [LeaveApprovalController::class, 'index'])
+            ->name('leave.index');
+
+        Route::post('/leave-requests/{id}/approve', [LeaveApprovalController::class, 'approve'])
+            ->name('leave.approve');
+
+        Route::post('/leave-requests/{id}/reject', [LeaveApprovalController::class, 'reject'])
+            ->name('leave.reject');
     });
 });
 
