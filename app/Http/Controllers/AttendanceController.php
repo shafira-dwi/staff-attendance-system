@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\User;
 
 class AttendanceController extends Controller
 {
@@ -55,5 +56,22 @@ class AttendanceController extends Controller
         ]);
 
         return back()->with('success', 'Clock out successful.');
+    }
+    public function adminIndex(Request $request)
+    {
+        $query = Attendance::with('user');
+
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->user_id);
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $attendances = $query->latest()->get();
+        $users = User::all();
+
+        return view('admin.attendance.index', compact('attendances', 'users'));
     }
 }

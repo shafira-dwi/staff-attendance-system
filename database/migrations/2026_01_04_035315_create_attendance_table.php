@@ -10,16 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('attendance', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->date('date');
+            $table->date('attendance_date');
             $table->time('check_in')->nullable();
             $table->time('check_out')->nullable();
-            $table->enum('status', ['present', 'late', 'absent'])->default('present');
+            $table->string('status')->default('present');
             $table->timestamps();
-
-            $table->unique(['user_id', 'date']);
         });
     }
 
