@@ -7,21 +7,26 @@
         <h1 class="text-2xl font-semibold mb-6">Attendance History</h1>
 
         {{-- FILTER --}}
-        <div class="bg-white p-4 rounded-xl shadow mb-6 flex gap-4 items-end">
+        <form method="GET" class="bg-white p-4 rounded-xl shadow mb-6 flex gap-4 items-end">
             <div>
-                <label class="text-sm text-gray-600">Start Date</label>
-                <input type="date" class="input">
+                <label class="text-sm text-gray-600">Staff</label>
+                <select name="user_id" class="input">
+                    <option value="">All Staff</option>
+                    @foreach ($users as $user)
+                        <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
+                            {{ $user->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
             <div>
-                <label class="text-sm text-gray-600">End Date</label>
-                <input type="date" class="input">
+                <label class="text-sm text-gray-600">Date</label>
+                <input type="date" name="date" class="input" value="{{ request('date') }}">
             </div>
 
-            <button class="btn-primary">
-                Filter
-            </button>
-        </div>
+            <button class="btn-primary">Filter</button>
+        </form>
 
         {{-- TABLE --}}
         <div class="bg-white rounded-xl shadow overflow-x-auto">
@@ -37,25 +42,41 @@
                 </thead>
 
                 <tbody class="divide-y">
-                    <tr>
-                        <td class="px-4 py-3">2026-01-06</td>
-                        <td class="px-4 py-3">John Doe</td>
-                        <td class="px-4 py-3">08:05</td>
-                        <td class="px-4 py-3">17:00</td>
-                        <td class="px-4 py-3">
-                            <x-badge type="success">Present</x-badge>
-                        </td>
-                    </tr>
+                    @forelse($attendances as $attendance)
+                        <tr>
+                            <td class="px-4 py-3">
+                                {{ $attendance->date }}
+                            </td>
 
-                    <tr>
-                        <td class="px-4 py-3">2026-01-05</td>
-                        <td class="px-4 py-3">Jane Smith</td>
-                        <td class="px-4 py-3">08:20</td>
-                        <td class="px-4 py-3">17:02</td>
-                        <td class="px-4 py-3">
-                            <x-badge type="warning">Late</x-badge>
-                        </td>
-                    </tr>
+                            <td class="px-4 py-3">
+                                {{ $attendance->user->name }}
+                            </td>
+
+                            <td class="px-4 py-3">
+                                {{ $attendance->clock_in ?? '-' }}
+                            </td>
+
+                            <td class="px-4 py-3">
+                                {{ $attendance->clock_out ?? '-' }}
+                            </td>
+
+                            <td class="px-4 py-3">
+                                @if ($attendance->status === 'present')
+                                    <x-badge type="success">Present</x-badge>
+                                @elseif($attendance->status === 'late')
+                                    <x-badge type="warning">Late</x-badge>
+                                @else
+                                    <x-badge type="danger">Absent</x-badge>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="px-4 py-6 text-center text-gray-500">
+                                No attendance data found
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

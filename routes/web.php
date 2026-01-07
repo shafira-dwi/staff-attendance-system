@@ -60,9 +60,8 @@ Route::middleware('auth')->group(function () {
             return view('admin.dashboard');
         })->name('dashboard');
 
-        Route::get('/attendance', function () {
-            return view('admin.attendance.index');
-        })->name('attendance.index');
+        Route::get('/attendance', [AttendanceController::class, 'adminIndex'])
+            ->name('attendance.index');
 
         // LEAVE APPROVAL
         Route::get('/leave-requests', [LeaveApprovalController::class, 'index'])
