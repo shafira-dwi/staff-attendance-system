@@ -1,83 +1,39 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Staff\LeaveRequestController;
 use App\Http\Controllers\Admin\LeaveApprovalController;
-/*
-|--------------------------------------------------------------------------
-| DEFAULT
-|--------------------------------------------------------------------------
-*/
-Route::get('/', function () {
-    return redirect()->route('login');
+
+// ----- LOGIN / GUEST -----
+Route::middleware('guest')->group(function () {
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('login', [AuthenticatedSessionController::class, 'store']);
 });
 
-/*
-|--------------------------------------------------------------------------
-| AUTHENTICATED ROUTES
-|--------------------------------------------------------------------------
-*/
-Route::middleware('auth')->group(function () {
+// LOGOUT (POST)
+Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout')
+    ->middleware('auth');
 
-    /*
-    |--------------------------------------------------------------------------
-    | STAFF
-    |--------------------------------------------------------------------------
-    */
-    Route::prefix('staff')->name('staff.')->group(function () {
-
-        Route::get('/dashboard', function () {
-            return view('staff.dashboard');
-        })->name('dashboard');
-
-        // Attendance
-        Route::get('/attendance', [AttendanceController::class, 'index'])
-            ->name('attendance.index');
-
-        Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn'])
-            ->name('attendance.clockIn');
-
-        Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut'])
-            ->name('attendance.clockOut');
-
-        // Leave
-        Route::get('/leave', [LeaveRequestController::class, 'index'])
-            ->name('leave.index');
-
-        Route::post('/leave', [LeaveRequestController::class, 'store'])
-            ->name('leave.store');
-    });
-
-    /*
-    |--------------------------------------------------------------------------
-    | ADMIN (DUMMY UI ONLY)
-    |--------------------------------------------------------------------------
-    */
-    Route::prefix('admin')->name('admin.')->group(function () {
-
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
-
-        Route::get('/attendance', [AttendanceController::class, 'adminIndex'])
-            ->name('attendance.index');
-
-        // LEAVE APPROVAL
-        Route::get('/leave-requests', [LeaveApprovalController::class, 'index'])
-            ->name('leave.index');
-
-        Route::post('/leave-requests/{id}/approve', [LeaveApprovalController::class, 'approve'])
-            ->name('leave.approve');
-
-        Route::post('/leave-requests/{id}/reject', [LeaveApprovalController::class, 'reject'])
-            ->name('leave.reject');
-    });
+// ----- ADMIN -----
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('dashboard', fn() => view('admin.dashboard'))->name('dashboard');
+    Route::get('attendance', [AttendanceController::class, 'adminIndex'])->name('attendance.index');
+    Route::get('leave-requests', [LeaveApprovalController::class, 'index'])->name('leave.index');
+    Route::post('leave-requests/{id}/approve', [LeaveApprovalController::class, 'approve'])->name('leave.approve');
+    Route::post('leave-requests/{id}/reject', [LeaveApprovalController::class, 'reject'])->name('leave.reject');
+    Route::resource('staff', StaffController::class);
 });
 
-/*
-|--------------------------------------------------------------------------
-| AUTH ROUTES (LOGIN, LOGOUT, dll)
-|--------------------------------------------------------------------------
-*/
-require __DIR__ . '/auth.php';
+// ----- STAFF -----
+Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->group(function () {
+    Route::get('dashboard', fn() => view('staff.dashboard'))->name('dashboard');
+    Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('attendance/clock-in', [AttendanceController::class, 'clockIn'])->name('attendance.clockIn');
+    Route::post('attendance/clock-out', [AttendanceController::class, 'clockOut'])->name('attendance.clockOut');
+    Route::get('leave', [LeaveRequestController::class, 'index'])->name('leave.index');
+    Route::post('leave', [LeaveRequestController::class, 'store'])->name('leave.store');
+});
