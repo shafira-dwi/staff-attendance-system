@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use App\Models\User;
 
 class AttendanceController extends Controller
 {
@@ -35,7 +35,7 @@ class AttendanceController extends Controller
         Attendance::create([
             'user_id' => auth()->id(),
             'date' => $today,
-            'clock_in' => Carbon::now(),
+            'clock_in' => Carbon::now()->format('H:i:s'),
         ]);
 
         return back()->with('success', 'Clock in successful.');
@@ -52,11 +52,12 @@ class AttendanceController extends Controller
         }
 
         $attendance->update([
-            'clock_out' => Carbon::now(),
+            'clock_out' => Carbon::now()->format('H:i:s'),
         ]);
 
         return back()->with('success', 'Clock out successful.');
     }
+
     public function adminIndex(Request $request)
     {
         $query = Attendance::with('user');
@@ -69,7 +70,7 @@ class AttendanceController extends Controller
             $query->whereDate('date', $request->date);
         }
 
-        $attendances = $query->latest()->get();
+        $attendances = $query->orderBy('date', 'desc')->get();
         $users = User::all();
 
         return view('admin.attendance.index', compact('attendances', 'users'));

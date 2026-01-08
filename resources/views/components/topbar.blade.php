@@ -11,13 +11,13 @@
     </div>
 
     <!-- Right -->
-    <div class="flex items-center gap-4">
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
         <span class="text-sm text-gray-600">
-            Admin
+            WorkTrack
         </span>
-
-        <button class="text-sm text-red-600 hover:underline">
+        <button type="submit" class="text-sm text-red-600 hover:underline">
             Logout
         </button>
-    </div>
+    </form>
 </nav>
