@@ -28,22 +28,22 @@
 
         {{-- Button --}}
         <div class="flex gap-3">
-            <form method="POST" action="{{ route('attendance.clockIn') }}">
+            <form method="POST" action="{{ route('staff.attendance.clockIn') }}">
                 @csrf
                 <button
                     class="px-4 py-2 rounded text-white
-                {{ 'attendance' ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700' }}"
-                    {{ 'attendance' ? 'disabled' : '' }}>
+        {{ $alreadyClockedIn ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700' }}"
+                    {{ $alreadyClockedIn ? 'disabled' : '' }}>
                     Clock In
                 </button>
             </form>
 
-            <form method="POST" action="{{ route('attendance.clockOut') }}">
+            <form method="POST" action="{{ route('staff.attendance.clockOut') }}">
                 @csrf
                 <button
                     class="px-4 py-2 rounded text-white
-                {{ 'attendance' || $attendance->clock_out ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700' }}"
-                    {{ 'attendance' || $attendance->clock_out ? 'disabled' : '' }}>
+        {{ !$canClockOut ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700' }}"
+                    {{ !$canClockOut ? 'disabled' : '' }}>
                     Clock Out
                 </button>
             </form>

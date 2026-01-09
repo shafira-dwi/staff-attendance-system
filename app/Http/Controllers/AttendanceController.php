@@ -11,19 +11,20 @@ class AttendanceController extends Controller
 {
     public function index()
     {
-        $today = Carbon::today();
-
+        $today = now()->format('Y-m-d');
         $attendance = Attendance::where('user_id', auth()->id())
-            ->whereDate('date', $today)
+            ->whereDate('clock_in', $today)
             ->first();
 
-        return view('staff.attendance.index', compact('attendance'));
+        $alreadyClockedIn = $attendance != null;
+        $canClockOut = $attendance && $attendance->clock_out == null;
+
+        return view('staff.attendance.index', compact('attendance', 'alreadyClockedIn', 'canClockOut'));
     }
 
     public function clockIn()
     {
-        $today = Carbon::today();
-
+        $today = date('Y-m-d');
         $attendance = Attendance::where('user_id', auth()->id())
             ->whereDate('date', $today)
             ->first();
@@ -34,8 +35,8 @@ class AttendanceController extends Controller
 
         Attendance::create([
             'user_id' => auth()->id(),
-            'date' => $today,
-            'clock_in' => Carbon::now()->format('H:i:s'),
+            'date' => Carbon::today(),
+            'clock_in' => Carbon::now(),
         ]);
 
         return back()->with('success', 'Clock in successful.');
@@ -45,14 +46,15 @@ class AttendanceController extends Controller
     {
         $attendance = Attendance::where('user_id', auth()->id())
             ->whereDate('date', Carbon::today())
+            ->whereNull('clock_out')
             ->first();
 
-        if (!$attendance || $attendance->clock_out) {
+        if (!$attendance) {
             return back()->with('error', 'You cannot clock out.');
         }
 
         $attendance->update([
-            'clock_out' => Carbon::now()->format('H:i:s'),
+            'clock_out' => Carbon::now(),
         ]);
 
         return back()->with('success', 'Clock out successful.');
