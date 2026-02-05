@@ -49,4 +49,27 @@
             </form>
         </div>
     </div>
+
+    <tbody>
+        @forelse ($attendances as $attendance)
+            <tr>
+                <td>{{ \Carbon\Carbon::parse($attendance->date)->format('d M Y') }}</td>
+                <td>{{ $attendance->clock_in ?? '-' }}</td>
+                <td>{{ $attendance->clock_out ?? '-' }}</td>
+                <td>
+                    <span
+                        class="badge
+                    {{ $attendance->status === 'present' ? 'bg-success' : '' }}
+                    {{ $attendance->status === 'late' ? 'bg-warning' : '' }}
+                    {{ $attendance->status === 'absent' ? 'bg-danger' : '' }}">
+                        {{ ucfirst($attendance->status) }}
+                    </span>
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="4">No attendance data available</td>
+            </tr>
+        @endforelse
+    </tbody>
 @endsection

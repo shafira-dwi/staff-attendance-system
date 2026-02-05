@@ -1,61 +1,65 @@
 @extends('layouts.staff')
 
 @section('content')
-    <h2>Leave Request</h2>
-
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <form method="POST" action="{{ route('staff.leave.store') }}">
-        @csrf
+    {{-- Submit Leave --}}
 
-        <div>
-            <label>Start Date</label>
-            <input type="date" name="start_date" required>
-        </div>
+    <!-- Main -->
+    <main class="main">
 
-        <div>
-            <label>End Date</label>
-            <input type="date" name="end_date" required>
-        </div>
+        <div class="card-body">
 
-        <div>
-            <label>Reason</label>
-            <textarea name="reason"></textarea>
-        </div>
+            {{-- Leave History --}}
 
-        <button type="submit">Submit Leave</button>
-    </form>
+            <hr>
 
-    <hr>
-
-    <h3>Leave History</h3>
-
-    <table border="1" cellpadding="8">
-        <tr>
-            <th>Start</th>
-            <th>End</th>
-            <th>Reason</th>
-            <th>Status</th>
-        </tr>
-
-        @foreach ($leaveRequests as $leave)
-            <tr>
-                <td>{{ $leave->start_date }}</td>
-                <td>{{ $leave->end_date }}</td>
-                <td>{{ $leave->reason }}</td>
-                <td>
-                    <span
-                        class="
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 position-relative text-center">
+                    <div class="card-header font-weight-bold text-primary">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            Leave History
+                        </h6>
+                        <a href="{{ route('staff.leave.add') }}"
+                            class="btn btn-primary position-absolute top-50 end-0 translate-middle-y me-3">
+                            <i class="fa fa-plus me-1"></i> Add Leave
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-bordered table-striped mb-0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Reason</th>
+                                <th>Leave Letter</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($leaveRequests as $leave)
+                                <tr>
+                                    <td>{{ $leave->start_date }}</td>
+                                    <td>{{ $leave->end_date }}</td>
+                                    <td>{{ $leave->reason }}</td>
+                                    <td>{{ $leave->letter }}</td>
+                                    <td>
+                                        <span
+                                            class="
                 {{ $leave->status === 'pending' ? 'badge-warning' : '' }}
                 {{ $leave->status === 'approved' ? 'badge-success' : '' }}
                 {{ $leave->status === 'rejected' ? 'badge-danger' : '' }}
             ">
-                        {{ ucfirst($leave->status) }}
-                    </span>
-                </td>
-            </tr>
-        @endforeach
-    </table>
-@endsection
+                                            {{ ucfirst($leave->status) }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        @endsection

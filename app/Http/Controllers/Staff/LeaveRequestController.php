@@ -44,6 +44,20 @@ class LeaveRequestController extends Controller
             'status' => 'pending',
         ]);
 
-        return redirect()->back()->with('success', 'Leave request submitted');
+        return redirect()->route('staff.leave.index')
+            ->with('success', 'Leave request submitted successfully!');
+
     }
+    public function add()
+    {
+        $leaveTypes = [
+            'annual' => 'Annual Leave',
+            'sick' => 'Sick Leave',
+            'personal' => 'Personal Leave',
+            'emergency' => 'Emergency Leave',
+        ];
+
+        return view('staff.leave.add', compact('leaveTypes'));
+    }
+
 }
