@@ -12,14 +12,26 @@ class AttendanceController extends Controller
     public function index()
     {
         $today = now()->format('Y-m-d');
+
+        // Attendance hari ini (1 data)
         $attendance = Attendance::where('user_id', auth()->id())
             ->whereDate('clock_in', $today)
             ->first();
 
+        // Riwayat attendance (banyak data)
+        $attendances = Attendance::where('user_id', auth()->id())
+            ->latest()
+            ->get();
+
         $alreadyClockedIn = $attendance != null;
         $canClockOut = $attendance && $attendance->clock_out == null;
 
-        return view('staff.attendance.index', compact('attendance', 'alreadyClockedIn', 'canClockOut'));
+        return view('staff.attendance.index', compact(
+            'attendance',
+            'attendances',
+            'alreadyClockedIn',
+            'canClockOut'
+        ));
     }
 
     public function clockIn()

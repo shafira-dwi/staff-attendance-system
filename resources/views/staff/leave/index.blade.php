@@ -19,9 +19,9 @@
             <div class="card shadow mb-4">
                 <div class="card-header py-3 position-relative text-center">
                     <div class="card-header font-weight-bold text-primary">
-                        <h6 class="m-0 font-weight-bold text-primary">
+                        <h4 class="m-0 font-weight-bold text-primary">
                             Leave History
-                        </h6>
+                        </h4>
                         <a href="{{ route('staff.leave.add') }}"
                             class="btn btn-primary position-absolute top-50 end-0 translate-middle-y me-3">
                             <i class="fa fa-plus me-1"></i> Add Leave
@@ -62,4 +62,6 @@
                     </table>
                 </div>
             </div>
-        @endsection
+        </div>
+    </main>
+@endsection

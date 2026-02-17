@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\LeaveApprovalController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Staff\DashboardController;
+use App\Http\Controllers\AdminDashboardController;
 
 Route::middleware('auth')->group(function () {
 
@@ -41,8 +42,10 @@ Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
 
 // ----- ADMIN -----
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('dashboard', fn() => view('admin.dashboard'))->name('dashboard');
+    Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('attendance', [AttendanceController::class, 'adminIndex'])->name('attendance.index');
+    Route::post('attendance/clock-in', [AttendanceController::class, 'clockIn'])->name('attendance.clockIn');
+    Route::post('attendance/clock-out', [AttendanceController::class, 'clockOut'])->name('attendance.clockOut');
     Route::get('leave-requests', [LeaveApprovalController::class, 'index'])->name('leave.index');
     Route::post('leave-requests/{id}/approve', [LeaveApprovalController::class, 'approve'])->name('leave.approve');
     Route::post('leave-requests/{id}/reject', [LeaveApprovalController::class, 'reject'])->name('leave.reject');

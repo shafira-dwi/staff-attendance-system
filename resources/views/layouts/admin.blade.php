@@ -5,24 +5,29 @@
     <meta charset="UTF-8">
     <title>@yield('title', 'Admin Dashboard')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="bg-gray-100 font-sans">
 
     <div class="flex min-h-screen">
+
         {{-- Sidebar --}}
-        @include('components.sidebar-admin')
+        <div style="width:260px; flex-shrink:0;">
+            @include('components.sidebar-admin')
+        </div>
 
         {{-- Main Content --}}
-        <div class="flex-1 flex flex-col">
-            {{-- Topbar --}}
+        <div style="flex:1;">
             @include('components.topbar')
 
-            {{-- Page Content --}}
-            <main class="p-6">
+            <main style="padding:24px;">
                 @yield('content')
             </main>
         </div>
+
     </div>
 
 </body>

@@ -63,4 +63,32 @@ class StaffController extends Controller
         $staff->delete();
         return redirect()->route('admin.staff.index')->with('success', 'Staff berhasil dihapus');
     }
+
+    public function showProfile()
+    {
+        return view('staff.profile-update'); // panggil Blade baru
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:6|confirmed',
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
 }

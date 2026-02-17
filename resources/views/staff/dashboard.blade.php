@@ -1,15 +1,6 @@
 @extends('layouts.staff')
 
 @section('content')
-    <html lang="id">
-
-    <head>
-        <meta charset="UTF-8">
-        <title>Dashboard Staff</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    </head>
-
     <style>
         /* Calendar */
         .calendar-grid {
@@ -53,168 +44,170 @@
         }
     </style>
 
-    <body>
-        <div class="container mt-4">
+    </div>
+    <div class="container mt-4">
+        <div class="row g-4">
+
+            <!-- Profile -->
+            <div class="col-md-7">
+                <div class="bg-white flex rounded-xl shadow hover:shadow-xl transition duration-300 overflow-hidden h-56">
+                    <!-- Profile Image (setengah tinggi card) -->
+                    <div class="flex-shrink-0 w-1/2 h-full">
+                        <img src="https://ui-avatars.com/api/?name=Staff+User&size=128&background=0D8ABC&color=fff"
+                            class="h-full w-full object-cover" alt="Profile">
+                    </div>
+
+                    <!-- Profile Info -->
+                    <div class="p-3 flex flex-col justify-center w-1/2">
+                        <span class="text-gray-500 text-sm mb-1">My Profile</span>
+                        <h6 class="text-lg font-bold mb-1">
+                            {{ auth()->user()->staff->name ?? auth()->user()->name }}
+                        </h6>
+                        <p class="text-gray-500 text-sm mb-1">Mulai kerja sejak</p>
+                        <strong class="text-gray-800">01 Januari 2024</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kalender (KANAN) -->
+            <div class="col-md-4">
+                <div class="card p-2 small-calendar">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0">My Calendar</h6>
+                        <div>
+                            <button class="btn btn-sm btn-light" onclick="prevMonth()">‹</button>
+                            <button class="btn btn-sm btn-light" onclick="nextMonth()">›</button>
+                        </div>
+                    </div>
+
+                    <div class="text-center fw-semibold mb-1" id="monthYear"></div>
+
+                    <div class="calendar-grid text-center">
+                        <div class="calendar-day">Sun</div>
+                        <div class="calendar-day">Mon</div>
+                        <div class="calendar-day">Tue</div>
+                        <div class="calendar-day">Wed</div>
+                        <div class="calendar-day">Thu</div>
+                        <div class="calendar-day">Fri</div>
+                        <div class="calendar-day">Sat</div>
+                    </div>
+
+                    <div class="calendar-grid text-center mt-1" id="calendarDays"></div>
+                </div>
+            </div>
+
             <div class="row g-4">
 
-                <!-- Header / Greeting -->
-                <div class="col-md-8">
-                    <div class="card p-4">
-                        <h4>
-                            Good Day,
-                            <strong>{{ auth()->user()->staff->name ?? auth()->user()->name }}</strong> 👋
-                        </h4>
-                        <p class="text-muted mb-0">Selamat datang di dashboard staff</p>
-                    </div>
-                </div>
+                <!-- STATISTIK CARDS -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
 
-                <!-- Profile -->
-                <div class="col-md-4">
-
-                    <!-- Header -->
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center py-2">
-                        <span class="fw-semibold">My Profile</span>
-                        <a href="{{ route('staff.profile') }}" class="btn btn-sm btn-outline-primary">
-                            <i class="fa fa-pen me-1"></i> Edit
-                        </a>
-                    </div>
-
-                    <div class="card p-3">
-                        <div class="d-flex align-items-center">
-                            <img src="https://via.placeholder.com/60" class="rounded-circle me-3">
+                    <!-- Total Attendance -->
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-xl transition duration-300">
+                        <div class="flex items-center justify-between">
                             <div>
-                                <h6 class="mb-0">
-                                    <strong>{{ auth()->user()->staff->name ?? auth()->user()->name }}</strong>
-                                </h6>
-                                <small class="text-muted">Mulai kerja sejak</small><br>
-                                <strong>01 Januari 2024</strong>
+                                <p class="text-gray-500 text-sm">Total Attendance</p>
+                                <h2 class="text-3xl font-bold text-blue-600">{{ $totalAttendance }}</h2>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row g-4">
-
-                    <!-- Statistik (KIRI) -->
-                    <div class="col-md-8">
-                        <div class="row g-3">
-                            <div class="col-md-3">
-                                <div class="card text-center p-3">
-                                    <i class="fa fa-check-circle fa-2x text-primary mb-2"></i>
-                                    <h6>Total Absensi</h6>
-                                    <h5>120</h5>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="card text-center p-3">
-                                    <i class="fa fa-file-alt fa-2x text-warning mb-2"></i>
-                                    <h6>Pengajuan Cuti</h6>
-                                    <h5>8</h5>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="card text-center p-3">
-                                    <i class="fa fa-thumbs-up fa-2x text-success mb-2"></i>
-                                    <h6>Cuti Di-ACC</h6>
-                                    <h5>5</h5>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="card text-center p-3">
-                                    <i class="fa fa-hourglass-half fa-2x text-danger mb-2"></i>
-                                    <h6>Sisa Cuti</h6>
-                                    <h5>3</h5>
-                                </div>
+                            <div class="bg-blue-100 p-3 rounded-full text-blue-600 text-xl">
+                                <i class="fa fa-check-circle"></i>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Kalender (KANAN) -->
-                    <div class="col-md-4">
-                        <div class="card p-2 small-calendar">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h6 class="mb-0">My Calendar</h6>
-                                <div>
-                                    <button class="btn btn-sm btn-light" onclick="prevMonth()">‹</button>
-                                    <button class="btn btn-sm btn-light" onclick="nextMonth()">›</button>
-                                </div>
+                    <!-- Leave Request -->
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-xl transition duration-300">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Leave Request</p>
+                                <h2 class="text-3xl font-bold text-yellow-600">{{ $totalLeave }}</h2>
                             </div>
-
-                            <div class="text-center fw-semibold mb-1" id="monthYear"></div>
-
-                            <div class="calendar-grid text-center">
-                                <div class="calendar-day">Sun</div>
-                                <div class="calendar-day">Mon</div>
-                                <div class="calendar-day">Tue</div>
-                                <div class="calendar-day">Wed</div>
-                                <div class="calendar-day">Thu</div>
-                                <div class="calendar-day">Fri</div>
-                                <div class="calendar-day">Sat</div>
+                            <div class="bg-yellow-100 p-3 rounded-full text-yellow-600 text-xl">
+                                <i class="fa fa-file-alt"></i>
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="calendar-grid text-center mt-1" id="calendarDays"></div>
+                    <!-- Leave Approved -->
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-xl transition duration-300">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Leave Approved</p>
+                                <h2 class="text-3xl font-bold text-green-600">{{ $approvedCount }}</h2>
+                            </div>
+                            <div class="bg-green-100 p-3 rounded-full text-green-600 text-xl">
+                                <i class="fa fa-thumbs-up"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Remaining Leave -->
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-xl transition duration-300">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Remaining Leave</p>
+                                <h2 class="text-3xl font-bold text-red-600">{{ $remainingLeave }} Hari</h2>
+                            </div>
+                            <div class="bg-red-100 p-3 rounded-full text-red-600 text-xl">
+                                <i class="fa fa-hourglass-half"></i>
+                            </div>
                         </div>
                     </div>
 
                 </div>
 
-                <script>
-                    let currentDate = new Date();
+            </div>
 
-                    function renderCalendar() {
-                        const monthYear = document.getElementById("monthYear");
-                        const calendarDays = document.getElementById("calendarDays");
+            <script>
+                let currentDate = new Date();
 
-                        const year = currentDate.getFullYear();
-                        const month = currentDate.getMonth();
+                function renderCalendar() {
+                    const monthYear = document.getElementById("monthYear");
+                    const calendarDays = document.getElementById("calendarDays");
 
-                        const firstDay = new Date(year, month, 1).getDay();
-                        const lastDate = new Date(year, month + 1, 0).getDate();
+                    const year = currentDate.getFullYear();
+                    const month = currentDate.getMonth();
 
-                        const monthNames = [
-                            "January", "February", "March", "April", "May", "June",
-                            "July", "August", "September", "October", "November", "December"
-                        ];
+                    const firstDay = new Date(year, month, 1).getDay();
+                    const lastDate = new Date(year, month + 1, 0).getDate();
 
-                        monthYear.innerText = `${monthNames[month]} ${year}`;
-                        calendarDays.innerHTML = "";
+                    const monthNames = [
+                        "January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"
+                    ];
 
-                        for (let i = 0; i < firstDay; i++) {
-                            calendarDays.innerHTML += `<div></div>`;
-                        }
+                    monthYear.innerText = `${monthNames[month]} ${year}`;
+                    calendarDays.innerHTML = "";
 
-                        for (let day = 1; day <= lastDate; day++) {
-                            const today = new Date();
-                            let isToday = day === today.getDate() &&
-                                month === today.getMonth() &&
-                                year === today.getFullYear();
+                    for (let i = 0; i < firstDay; i++) {
+                        calendarDays.innerHTML += `<div></div>`;
+                    }
 
-                            calendarDays.innerHTML += `
+                    for (let day = 1; day <= lastDate; day++) {
+                        const today = new Date();
+                        let isToday = day === today.getDate() &&
+                            month === today.getMonth() &&
+                            year === today.getFullYear();
+
+                        calendarDays.innerHTML += `
                 <div class="calendar-date ${isToday ? 'calendar-today' : ''}">
                     ${day}
                 </div>
             `;
-                        }
                     }
+                }
 
-                    function prevMonth() {
-                        currentDate.setMonth(currentDate.getMonth() - 1);
-                        renderCalendar();
-                    }
-
-                    function nextMonth() {
-                        currentDate.setMonth(currentDate.getMonth() + 1);
-                        renderCalendar();
-                    }
-
+                function prevMonth() {
+                    currentDate.setMonth(currentDate.getMonth() - 1);
                     renderCalendar();
-                </script>
-            </div>
+                }
 
-    </body>
+                function nextMonth() {
+                    currentDate.setMonth(currentDate.getMonth() + 1);
+                    renderCalendar();
+                }
 
-    </html>
+                renderCalendar();
+            </script>
+        </div>
+    </div>
 @endsection
