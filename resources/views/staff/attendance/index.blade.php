@@ -31,7 +31,7 @@
                     <button
                         class="px-4 py-2 rounded text-white {{ $alreadyClockedIn ? 'bg-black cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700' }}"
                         {{ $alreadyClockedIn ? 'disabled' : '' }}>
-                        Clock In
+                        Check In
                     </button>
                 </form>
 
@@ -40,7 +40,7 @@
                     <button
                         class="px-4 py-2 rounded text-white {{ !$canClockOut ? 'bg-black cursor-not-allowed' : 'bg-red-600 hover:bg-red-700' }}"
                         {{ !$canClockOut ? 'disabled' : '' }}>
-                        Clock Out
+                        Check Out
                     </button>
                 </form>
             </div>
