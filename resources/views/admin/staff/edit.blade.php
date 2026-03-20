@@ -3,7 +3,7 @@
 @section('title', 'Edit Staff')
 
 @section('content')
-    <h1 class="text-xl font-semibold mb-4">Edit Staff</h1>
+    <h1 class="text-xl font-bold mb-4">Edit Staff</h1>
 
     <form action="{{ route('admin.staff.update', $staff->id) }}" method="POST" class="space-y-4">
         @csrf
@@ -19,7 +19,7 @@
             <input type="email" name="email" value="{{ $staff->email }}" class="border p-2 w-full">
         </div>
 
-        <button class="bg-blue-500 text-white px-4 py-2 rounded">
+        <button class="bg-green-600 text-white px-4 py-2 rounded">
             Update
         </button>
     </form>

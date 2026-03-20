@@ -20,10 +20,12 @@ class AdminDashboardController extends Controller
 
         // Attendance hari ini (semua staff)
         $todayAttendance = Attendance::with('user')
-            ->whereDate('clock_in', $today) // ganti sesuai nama kolom di DB
+            ->whereDate('date', $today)
             ->get();
 
-        $presentToday = $todayAttendance->where('status', 'Present')->count();
+        $presentToday = $todayAttendance->whereNotNull('clock_in')->count();
+        $lateToday = 0; // nanti bisa dihitung dari jam
+        $absentToday = $totalStaff - $presentToday;
         $lateToday = $todayAttendance->where('status', 'Late')->count();
         $absentToday = $totalStaff - $todayAttendance->count();
 

@@ -1,4 +1,4 @@
-<aside class="w-64 min-h-screen bg-white border-r">
+<aside class="w-64 bg-[#0f172a] text-white min-h-screen sticky top-0">
 
     <head>
         <meta charset="UTF-8">
@@ -14,7 +14,7 @@
         .sidebar {
             width: 240px;
             min-height: 100vh;
-            background: #4f6bed;
+            background: #0f172a;
         }
 
         .sidebar a {
@@ -35,7 +35,7 @@
         .sidebar-link {
             background: none;
             border: none;
-            color: #fff;
+            color: #ffffff;
             width: 100%;
             text-align: left;
             padding: 12px 20px;
@@ -49,7 +49,10 @@
     <nav class="px-4 space-y-2 text-sm">
         <!-- Sidebar -->
         <div class="sidebar p-3">
-            <h4 class="text-white mb-4">WorkTrack</h4>
+            <h4 class="text-white mb-4">
+                <span class="text-white-800 brand-font">Work</span>
+                <span class="text-green-600 brand-font">Track</span>
+            </h4>
             <a href="{{ route('admin.dashboard') }}"><i class="fa fa-home me-2"></i> Dashboard</a>
             <a href="{{ route('admin.staff.index') }}"><i class="fa fa-person me-2"></i> Staff Management</a>
             <a href="{{ route('admin.attendance.index') }}"><i class="fa fa-calendar-check me-2"></i> Staff

@@ -4,13 +4,13 @@
 
 @section('content')
 
-    <div class="mb-8">
+    <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Attendance History</h1>
         <p class="text-gray-500">Track and monitor staff attendance records</p>
     </div>
 
     {{-- FILTER SECTION --}}
-    <div class="bg-white p-6 rounded-xl shadow mb-8">
+    <div class="bg-white p-6 rounded-xl shadow mb-6">
         <form method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
 
             <div>
@@ -33,7 +33,7 @@
             </div>
 
             <div>
-                <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition w-full md:w-auto">
+                <button class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition w-full md:w-auto">
                     Filter
                 </button>
             </div>
@@ -83,23 +83,39 @@
                             </td>
 
                             <td class="px-4 py-3">
-                                @if ($attendance->status === 'present')
-                                    <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-medium">
-                                        Present
-                                    </span>
-                                @elseif ($attendance->status === 'late')
-                                    <span class="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-xs font-medium">
-                                        Late
-                                    </span>
-                                @elseif ($attendance->status === 'absent')
-                                    <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-medium">
-                                        Absent
-                                    </span>
-                                @else
-                                    <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-medium">
-                                        -
-                                    </span>
-                                @endif
+                                @php
+                                    $status = match (true) {
+                                        !$attendance->clock_in => 'Absent',
+                                        $attendance->clock_in && $attendance->clock_in->format('H:i') > '08:00'
+                                            => 'Late',
+                                        default => 'Present',
+                                    };
+
+                                    $statusUI = match ($status) {
+                                        'Present' => [
+                                            'bg' => 'bg-green-100',
+                                            'text' => 'text-green-600',
+                                            'icon' => 'fa-check-circle',
+                                        ],
+                                        'Late' => [
+                                            'bg' => 'bg-yellow-100',
+                                            'text' => 'text-yellow-600',
+                                            'icon' => 'fa-clock',
+                                        ],
+                                        'Absent' => [
+                                            'bg' => 'bg-red-100',
+                                            'text' => 'text-red-600',
+                                            'icon' => 'fa-times-circle',
+                                        ],
+                                    };
+                                @endphp
+                                <div
+                                    class="inline-flex items-center gap-2
+                                        {{ $statusUI['bg'] }} {{ $statusUI['text'] }}
+                                        px-3 py-1.5 rounded-full text-xs font-semibold">
+                                    <i class="fas {{ $statusUI['icon'] }}"></i>
+                                    {{ $status }}
+                                </div>
                             </td>
 
                         </tr>

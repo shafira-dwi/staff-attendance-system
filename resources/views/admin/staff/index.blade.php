@@ -7,7 +7,7 @@
     <div class="mb-6 flex justify-between items-center">
         <h1 class="text-3xl font-bold text-gray-800">Staff Management</h1>
         <a href="{{ route('admin.staff.create') }}"
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
             + Add Staff
         </a>
     </div>
@@ -37,7 +37,7 @@
                         <td class="px-4 py-3 text-gray-600">{{ $staff->email }}</td>
                         <td class="px-4 py-3 text-center flex justify-center gap-2">
                             <a href="{{ route('admin.staff.edit', $staff->id) }}"
-                                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-xs transition">
+                                class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg text-xs transition">
                                 Edit
                             </a>
 

@@ -14,7 +14,7 @@
         .sidebar {
             width: 240px;
             min-height: 100vh;
-            background: #4f6bed;
+            background: #0f172a;
         }
 
         .sidebar a {
@@ -49,7 +49,10 @@
     <nav class="px-4 space-y-2 text-sm">
         <!-- Sidebar -->
         <div class="sidebar p-3">
-            <h4 class="text-white mb-4">WorkTrack</h4>
+            <h4 class="text-white mb-4">
+                <span class="text-white-800 brand-font">Work</span>
+                <span class="text-green-600 brand-font">Track</span>
+            </h4>
             <a href="{{ route('staff.dashboard') }}"><i class="fa fa-home me-2"></i> Dashboard</a>
             <a href="{{ route('staff.attendance.index') }}"><i class="fa fa-calendar-check me-2"></i> Attendance</a>
             <a href="{{ route('staff.leave.index') }}"><i class="fa fa-plane me-2"></i> Leave Request</a>

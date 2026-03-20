@@ -21,7 +21,7 @@
             <input type="password" name="password" class="border p-2 w-full" required>
         </div>
 
-        <button class="px-4 py-2 bg-blue-600 text-white rounded">
+        <button class="px-4 py-2 bg-green-600 text-white rounded">
             Save
         </button>
     </form>
