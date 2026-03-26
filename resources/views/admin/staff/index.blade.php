@@ -37,7 +37,7 @@
                         <td class="px-4 py-3 text-gray-600">{{ $staff->email }}</td>
                         <td class="px-4 py-3 text-center flex justify-center gap-2">
                             <a href="{{ route('admin.staff.edit', $staff->id) }}"
-                                class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg text-xs transition">
+                                class="bg-[#0f172a] hover:bg-[#0f172a] text-white px-3 py-1 rounded-lg text-xs transition">
                                 Edit
                             </a>
 

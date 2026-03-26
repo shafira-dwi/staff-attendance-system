@@ -37,11 +37,19 @@ class LeaveRequestController extends Controller
             return back()->with('error', 'Leave dates overlap with existing leave.');
         }
 
+        // Upload file PDF (Optional)
+        $path = null;
+        if ($request->hasFile('letter') && $request->file('letter')->isValid()) {
+            $path = $request->file('letter')->store('leave_letters', 'public');
+        }
+
         auth()->user()->leaveRequests()->create([
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'reason' => $request->reason,
+            'type' => $request->type,
             'status' => 'pending',
+            'letter' => $path,
         ]);
 
         return redirect()->route('staff.leave.index')

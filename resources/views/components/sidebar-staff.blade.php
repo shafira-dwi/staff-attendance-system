@@ -1,4 +1,4 @@
-<aside class="w-64 min-h-screen bg-white border-r">
+<aside class="w-64 bg-[#0f172a] text-white min-h-screen sticky top-0">
 
     <head>
         <meta charset="UTF-8">
@@ -46,7 +46,7 @@
         }
     </style>
 
-    <nav class="px-4 space-y-2 text-sm">
+    <nav class="px-3 space-y-2 text-sm">
         <!-- Sidebar -->
         <div class="sidebar p-3">
             <h4 class="text-white mb-4">

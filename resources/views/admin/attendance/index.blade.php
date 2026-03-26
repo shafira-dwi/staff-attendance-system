@@ -86,7 +86,7 @@
                                 @php
                                     $status = match (true) {
                                         !$attendance->clock_in => 'Absent',
-                                        $attendance->clock_in && $attendance->clock_in->format('H:i') > '08:00'
+                                        $attendance->clock_in && $attendance->clock_in->format('H:i') > '13:00'
                                             => 'Late',
                                         default => 'Present',
                                     };

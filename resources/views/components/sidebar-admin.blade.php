@@ -46,7 +46,7 @@
         }
     </style>
 
-    <nav class="px-4 space-y-2 text-sm">
+    <nav class="px-3 space-y-2 text-sm">
         <!-- Sidebar -->
         <div class="sidebar p-3">
             <h4 class="text-white mb-4">

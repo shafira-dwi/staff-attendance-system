@@ -29,7 +29,7 @@
                 <form method="POST" action="{{ route('staff.attendance.clockIn') }}">
                     @csrf
                     <button
-                        class="px-4 py-2 rounded text-white {{ $alreadyClockedIn ? 'bg-black cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700' }}"
+                        class="px-4 py-2 rounded text-white {{ $alreadyClockedIn ? 'bg-black cursor-not-allowed' : 'bg-green-600 hover:bg-green-700' }}"
                         {{ $alreadyClockedIn ? 'disabled' : '' }}>
                         Check In
                     </button>
@@ -64,19 +64,39 @@
                             <td class="px-4 py-3">{{ $attendance->clock_in ?? '-' }}</td>
                             <td class="px-4 py-3">{{ $attendance->clock_out ?? '-' }}</td>
                             <td class="px-4 py-3">
-                                @if ($attendance->status === 'present')
-                                    <span
-                                        class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-medium">Present</span>
-                                @elseif($attendance->status === 'late')
-                                    <span
-                                        class="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-xs font-medium">Late</span>
-                                @elseif($attendance->status === 'absent')
-                                    <span
-                                        class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-medium">Absent</span>
-                                @else
-                                    <span
-                                        class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-medium">-</span>
-                                @endif
+                                @php
+                                    $status = match (true) {
+                                        !$attendance->clock_in => 'Absent',
+                                        $attendance->clock_in && $attendance->clock_in->format('H:i') > '13:00'
+                                            => 'Late',
+                                        default => 'Present',
+                                    };
+
+                                    $statusUI = match ($status) {
+                                        'Present' => [
+                                            'bg' => 'bg-green-100',
+                                            'text' => 'text-green-600',
+                                            'icon' => 'fa-check-circle',
+                                        ],
+                                        'Late' => [
+                                            'bg' => 'bg-yellow-100',
+                                            'text' => 'text-yellow-600',
+                                            'icon' => 'fa-clock',
+                                        ],
+                                        'Absent' => [
+                                            'bg' => 'bg-red-100',
+                                            'text' => 'text-red-600',
+                                            'icon' => 'fa-times-circle',
+                                        ],
+                                    };
+                                @endphp
+                                <div
+                                    class="inline-flex items-center gap-2
+                                        {{ $statusUI['bg'] }} {{ $statusUI['text'] }}
+                                        px-3 py-1.5 rounded-full text-xs font-semibold">
+                                    <i class="fas {{ $statusUI['icon'] }}"></i>
+                                    {{ $status }}
+                                </div>
                             </td>
                         </tr>
                     @empty

@@ -19,8 +19,9 @@
                         <th class="px-4 py-3">Date</th>
                         <th class="px-4 py-3">Type</th>
                         <th class="px-4 py-3">Reason</th>
+                        <th class="px-4 py-3">Leave Letter</th>
                         <th class="px-4 py-3">Status</th>
-                        <th class="px-4 py-3 text-center">Action</th>
+                        <th class="text-center px-4 py-3">Action</th>
                     </tr>
                 </thead>
 
@@ -44,6 +45,18 @@
 
                             <td class="px-4 py-3 text-gray-600">
                                 {{ $leave->reason }}
+                            </td>
+
+                            <!-- LETTER -->
+                            <td class="text-center">
+                                @if ($leave->letter)
+                                    <a href="{{ asset('storage/' . $leave->letter) }}" target="_blank"
+                                        class="text-indigo-500 hover:underline text-sm">
+                                        View
+                                    </a>
+                                @else
+                                    <span class="text-slate-400 text-xs">-</span>
+                                @endif
                             </td>
 
                             <td class="px-4 py-3">
