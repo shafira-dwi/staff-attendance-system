@@ -1,27 +1,19 @@
 <?php
 
-try {
-    require __DIR__ . '/../vendor/autoload.php';
+echo '<h1>ENV TEST</h1>';
 
-    $app = require_once __DIR__ . '/../bootstrap/app.php';
+echo '<p>SESSION_DRIVER: ';
+var_dump(getenv('SESSION_DRIVER'));
+echo '</p>';
 
-    $request = Illuminate\Http\Request::create('/login', 'GET');
+echo '<p>CACHE_STORE: ';
+var_dump(getenv('CACHE_STORE'));
+echo '</p>';
 
-    $response = $app->handleRequest($request);
+echo '<p>QUEUE_CONNECTION: ';
+var_dump(getenv('QUEUE_CONNECTION'));
+echo '</p>';
 
-    echo "<h1>Laravel HTTP OK</h1>";
-    echo "<p>Status: " . $response->getStatusCode() . "</p>";
-    echo "<pre>";
-    echo htmlspecialchars($response->getContent());
-    echo "</pre>";
-
-} catch (Throwable $e) {
-    http_response_code(500);
-
-    echo "<h1>Laravel HTTP Error</h1>";
-    echo "<p><strong>Class:</strong> " . htmlspecialchars(get_class($e)) . "</p>";
-    echo "<p><strong>Message:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
-    echo "<p><strong>File:</strong> " . htmlspecialchars($e->getFile()) . "</p>";
-    echo "<p><strong>Line:</strong> " . $e->getLine() . "</p>";
-    echo "<pre>" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
-}
+echo '<p>APP_KEY exists: ';
+var_dump(!empty(getenv('APP_KEY')));
+echo '</p>';
