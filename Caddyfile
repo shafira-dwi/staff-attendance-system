@@ -1,4 +1,6 @@
 :{$PORT:80} {
+    respond /healthz "container-ok" 200
+
     root * /app/public
     encode zstd gzip
 
