@@ -32,4 +32,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 
 COPY Caddyfile /etc/caddy/Caddyfile
 
-CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
